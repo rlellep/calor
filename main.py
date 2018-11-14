@@ -74,7 +74,7 @@ def valikute_töötlemine(valikud):
 def uustoit():
     uus = input("3. Toit puudub andmebaasist. Soovite lisada andmebaasi uue toidu?(jah/ei): ")
     if uus == "jah":
-        uustoit = input("Sisestage uue toidu nimi (sinna järele soovitatavalt ka kirjeldus): ")
+        uustoit = input("Sisestage uue toidu nimi (sinna järele soovitatavalt ka kirjeldus): ").lower().capitalize()
         uuskalor = float(input("Sisestage toidu kaloraaz 100 grammi kohta: "))+0.0000001
         f = open("export.csv","a")
         f.write("\n"+'"'+uustoit+'"'+","+str(uuskalor))
@@ -94,7 +94,6 @@ while True:
     valikud = {}
     valikud.update(otsing(toit))
     valikud.update(süva_otsing(toit))
-    print(valikud)
     if valikud != {}:
         tarbitud_toit = valikute_töötlemine(valikud)
     else:
@@ -112,41 +111,36 @@ while True:
 print("Nägemiseni!")
     
     
-    
+"""   
 root = Tk() 
 #Määratud akna suurus
-root.geometry("350x250")
+root.geometry("400x250")
 root.title("Kalori luger")
 #Raamide loomine
-ülemine_raam = Frame(root)
-keskmine_raam = Frame(root)
-keskvasak_raam = Frame(keskmine_raam)
-keskparem_raam = Frame(root)
-alumine_raam = Frame(root)
-ülemine_raam.grid(side=TOP)
-keskmine_raam.pack(side=TOP)
-alumine_raam.pack(side=TOP)
-keskvasak_raam.pack(side=LEFT)
-keskparem_raam.pack(side=LEFT)
-#Teksti ala, nuppude ja listbox'i loomine
-juhis = Label(root, text="Sisestage tarbitav toiduaine:")
-juhis.grid(row=0, column=0)
-teksti_ala = Entry(root)
-teksti_ala.grid(row=0, column=1)
+#Teksti alad
+juhis_toit = Label(root, text="Toiduaine:")
+juhis_toit.grid(row=0, column=0)
+toit = Entry(root)
+toit.grid(row=0, column=1)
+juhis_kogus = Label(root, text="Kogus:")
+juhis_kogus.grid(row=1, column=0)
+kogus = Entry(root)
+kogus.grid(row=1, column=1)
+#Listbox 
 listbox = Listbox(root)
-listbox.grid(row=1, column=0)
+listbox.grid(row=1, column=2)
+#Nupp
 button = Button(text="Close")
-button.grid(row=2, column=2)
+button.grid(row=6, column=5)
 #Vastused
 toiduaine = "Vali toiduaine"
 kogus = "0000"
 valitud_toiduaine = Label(root, text=toiduaine)
-valitud_toiduaine.grid(row = 1, column=1)
+#valitud_toiduaine.grid(row = 2, column=1)
 kogus = Label(root, text=kogus)
-kogus.grid(row = 1, column=2)
+#kogus.grid(row = 2, column=2)
 
 root.mainloop()
-
-
+"""
 
 
