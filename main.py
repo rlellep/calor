@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 
 def veateade():
     print("Teie toodet ei leitud... Proovige uuesti.")
@@ -30,6 +31,7 @@ def otsing(otsitav_toit, faili_nimi="export.csv"):
     fail.close()
     return vasted
 
+
 def süva_otsing(otsitav_toit, faili_nimi="export.csv"):
     vasted = {}
     for i in range(len(otsitav_toit), 0, -1):
@@ -37,15 +39,23 @@ def süva_otsing(otsitav_toit, faili_nimi="export.csv"):
         fail = open(faili_nimi)
         for rida in fail:
             rida_listina = rida.split(",")
-            failist_toit = rida_listina[0].strip("\"").lower()
+            failist_toit = rida_listina[0].strip("\"").lower().capitalize()
             if võimalik_vaste in failist_toit:
                 if abs(len(otsitav_toit) - len(failist_toit)) < 4:
                     failist_kaloraaž = leia_kaloraaž(rida_listina)
-                    vasted[failist_toit] = round(failist_kaloraaž,2)
+                    vasted[failist_toit] = failist_kaloraaž
+                    return vasted
         fail.close()
-        if vasted != []:
+        if vasted != {}:
             fail.close()
             return vasted
+
+def vaste_listina(vasted):
+    toidud = []
+    for toit in vasted:
+        toidud.append(toit)
+    return toidud
+    
 
 def valikute_töötlemine(valikud):
     print("Teie otsingule leiti järgmised vasted: ")
@@ -59,9 +69,11 @@ def valikute_töötlemine(valikud):
         while True:
             try:
                 i = int(input("Sisestage vastav number:  "))-1
+                if i < 0:
+                    raise Exception()
                 print("Valitud toit on:", toidud[i])
                 return toidud[i]
-            except(IndexError):
+            except:
                 print("Viga. Sisestage arv, mis on toote taga. Proovige uuesti.")
     elif otsus == "ei":
         veateade()
@@ -81,66 +93,39 @@ def uustoit():
         print("Toit lisatud andmebaasi.")
         f.close()
     else:
-        return None
+        return None        
     
-        
-print("--------------------------------------")
-print("---------KALORAAŽI KALKULAATOR--------")
-print("--------------------------------------")
+def p(event):
+    global funktsioon
+    return funktsioon.get()
+    
+    
+    
+def main():
+    root = Tk()
+    #Määratud akna nimi ja suurus
+    root.title("Kalori luger")
+    root.geometry("200x200")
+    #Rakenduse erinevad tab'id ehk leheküljed
+    leheküljed = ttk.Notebook(root)
+    lehekülg1 = ttk.Frame(leheküljed)
+    lehekülg2 = ttk.Frame(leheküljed)
+    leheküljed.add(lehekülg1, text="Kalkulaator")
+    leheküljed.add(lehekülg2, text="Lisa toit")
+    leheküljed.pack(expand=1, fill="both")
+    #Esimene leht
+    #Sildid
+    pealkiri = Label(lehekülg1, text="KALKULAATOR")
+    tühik = Label(lehekülg1, text="")
+    silt1 = Label(lehekülg1, text="Toiduaine: ")
+    silt2 = Label(lehekülg1, text="Kogus: ")
 
-while True:
-    print()
-    toit = input("Sisesta toit: ").lower().capitalize()
-    valikud = {}
-    valikud.update(otsing(toit))
-    valikud.update(süva_otsing(toit))
-    if valikud != {}:
-        tarbitud_toit = valikute_töötlemine(valikud)
-    else:
-        veateade()
-        uustoit()
-        tarbitud_toit = None
-    if tarbitud_toit != None:
-        kaloraaž = kaloraaži_leidmine(tarbitud_toit, valikud)
-        print(kaloraaž, "kcal")
-    #print()
-    print("Väljumiseks sisesta q. Uue otsingu jaoks vajuta ENTER. ")
-    käsklus = input("")
-    if käsklus.lower() == "q":
-        break
-print("Nägemiseni!")
-    
-    
-"""   
-root = Tk() 
-#Määratud akna suurus
-root.geometry("400x250")
-root.title("Kalori luger")
-#Raamide loomine
-#Teksti alad
-juhis_toit = Label(root, text="Toiduaine:")
-juhis_toit.grid(row=0, column=0)
-toit = Entry(root)
-toit.grid(row=0, column=1)
-juhis_kogus = Label(root, text="Kogus:")
-juhis_kogus.grid(row=1, column=0)
-kogus = Entry(root)
-kogus.grid(row=1, column=1)
-#Listbox 
-listbox = Listbox(root)
-listbox.grid(row=1, column=2)
-#Nupp
-button = Button(text="Close")
-button.grid(row=6, column=5)
-#Vastused
-toiduaine = "Vali toiduaine"
-kogus = "0000"
-valitud_toiduaine = Label(root, text=toiduaine)
-#valitud_toiduaine.grid(row = 2, column=1)
-kogus = Label(root, text=kogus)
-#kogus.grid(row = 2, column=2)
+    tühik.grid(row=2, column=0)
+    pealkiri.grid(row=1, column=1, columnspan=2, sticky="w")
+    silt1.grid(row=3, column=0, pady=1, sticky=E)
+    silt2.grid(row=4, column=0, pady=1, sticky=E)
+    root.mainloop()
 
-root.mainloop()
-"""
+main()
 
 
