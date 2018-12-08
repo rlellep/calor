@@ -3,12 +3,6 @@ from tkinter import ttk
 from tkinter.messagebox import askyesno
 from tkinter.messagebox import showinfo
 
-def veateade():
-    print("Teie toodet ei leitud... Proovige uuesti.")
-    print("Soovitused:")
-    print("1. Teie sisestatud toit oli liiga spetsiifiline. Proovige üldisemalt toitu kirja panna.")
-    print("2. Teie sisestatud toiduaine polnud korrektselt kirja pandud. Veenduge, et sisestatud toidu nimetus on korrektne.")
-
 def kaloraaži_leidmine(toit, toitude_kaloraaž):
     söödud_kogus = round(float(input("Sisesta kogus grammides: ")), 2)
     toidu_kaloraaž = toitude_kaloraaž[toit]/100
@@ -134,10 +128,8 @@ silt2 = Label(raam_lahtrid, text="Kogus (g): ")
 silt1.grid(row=3, column=0, pady=1, sticky=E)
 silt2.grid(row=4, column=0, pady=1, sticky=E)
 #Teksti alad
-global sisend
 sisend = StringVar()
 toit = ttk.Combobox(raam_lahtrid, textvariable=sisend, width=17, height=10)
-
 if sisend.get() != "":
     toit["values"] = vaste_listina(otsing(sisend.get()))
 toit.grid(row=3, column=1)
