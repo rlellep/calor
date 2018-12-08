@@ -103,46 +103,57 @@ def p(event):
     
 def main():
     root = Tk()
-    #Määratud akna nimi ja suurus
+    #Akna nimi ja suurus
     root.title("Kalori luger")
-    #Rakenduse erinevad tab'id ehk leheküljed
+    root.geometry("290x180")
+    #Akna erinevad tab'id ehk leheküljed
     leheküljed = ttk.Notebook(root)
     lehekülg1 = ttk.Frame(leheküljed)
     lehekülg2 = ttk.Frame(leheküljed)
     leheküljed.add(lehekülg1, text="Kalkulaator")
     leheküljed.add(lehekülg2, text="Lisa toit")
     leheküljed.pack(expand=1, fill="both")
+    
     #!!! ESIMENE LEHT !!!
-    #Suurus
-    root.geometry("240x180")
+    #Raamid
+    raam_lahtrid = Frame(lehekülg1)
+    raam_nupp = Frame(lehekülg1)
+    raam_lahtrid.pack(side=TOP, pady=(30, 10))
+    raam_nupp.pack(side=TOP)
     #Sildid
-    silt1 = Label(lehekülg1, text="Toiduaine: ")
-    silt2 = Label(lehekülg1, text="Kogus: ")
+    silt1 = Label(raam_lahtrid, text="Toiduaine: ")
+    silt2 = Label(raam_lahtrid, text="Kogus (g): ")
     silt1.grid(row=3, column=0, pady=1, sticky=E)
     silt2.grid(row=4, column=0, pady=1, sticky=E)
     #Teksti alad
-    toit = Entry(lehekülg1)
-    kogus = Entry(lehekülg1)
+    toit = Entry(raam_lahtrid)
+    kogus = Entry(raam_lahtrid)
     toit.grid(row=3, column=1)
     kogus.grid(row=4, column=1)
     #Nupud
-    sisesta_nupp = Button(lehekülg1, text="Enter")
-    sisesta_nupp.grid(row=6, column=3, pady=20, sticky="W")
+    sisesta_nupp = Button(raam_nupp, text="Enter")
+    sisesta_nupp.grid(row=6, column=3, pady=5, sticky="W")
     
     #!!! TEINE LEHT !!!
-    #Suurus
-    root.geometry("280x180")
-    silt1 = Label(lehekülg2, text="Uus toiduaine: ")
-    toidu_nimi = Entry(lehekülg2)
-    silt2 = Label(lehekülg2, text="Kaloraaž (100g kohta): ")
-    kogus = Entry(lehekülg2)
-    tühik = Label(lehekülg2, text="")
-    uus_toit_nupp = Button(lehekülg2, text="Sisesta")
-    silt1.grid(row=0, column=0, pady=1, sticky=W)
-    toidu_nimi.grid(row=1, column=0)
-    silt2.grid(row=2, column=0, pady=1, sticky=W)
-    kogus.grid(row=3, column=0)
-    tühik.grid(row=4, column= 0)
+    #Raamid
+    raam_uustoit = Frame(lehekülg2)
+    raam_uuskaloraaž = Frame(lehekülg2)
+    raam_nupp = Frame(lehekülg2)
+    raam_uustoit.pack(side=TOP, pady=(10,10))
+    raam_uuskaloraaž.pack(side=TOP, pady=(0, 10))
+    raam_nupp.pack(side=TOP, pady=(5, 10))
+    #Uus toiduaine
+    silt1 = Label(raam_uustoit, text="Uus toiduaine: ")
+    silt1.pack(side=TOP)
+    toidu_nimi = Entry(raam_uustoit)
+    toidu_nimi.pack(side=TOP)
+    #Kaloraaž
+    silt2 = Label(raam_uuskaloraaž, text="Kaloraaž (100g kohta): ")
+    silt2.pack(side=TOP)
+    kogus = Entry(raam_uuskaloraaž)
+    kogus.pack(side=TOP)
+    #Nupp
+    uus_toit_nupp = Button(raam_nupp, text="Sisesta")
     uus_toit_nupp.grid(row=5, column= 1, sticky=W)
     
     root.mainloop()
