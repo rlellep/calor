@@ -11,14 +11,29 @@ def leia_kaloraaž(list):
             continue
         
 def otsing(otsitav_toit, faili_nimi="export.csv"):
-    vasted = {}
-    fail = open(faili_nimi)
     if otsitav_toit == "":
         return None
+    vasted = {}
+    otsitav_toit = otsitav_toit.lower()
+    m = len(otsitav_toit)
+    tahed = []
+    for i in otsitav_toit:
+        tahed.append(i)
+    fail = open(faili_nimi)
     for rida in fail:
+        k = 0
         rida_listina = rida.split(",")
         failist_toit = rida_listina[0].strip("\"")
-        if otsitav_toit in failist_toit:
+        failisttoit = failist_toit.lower()
+        if len(failisttoit) <= m:
+            for i in range(len(failisttoit)):
+                if tahed[i] == failisttoit[i]:
+                    k += 1
+        else:
+            for i in range(m):
+                if tahed[i] == failisttoit[i]:
+                    k += 1
+        if otsitav_toit in failist_toit or k/m > 0.83:
             failist_kaloraaž = leia_kaloraaž(rida_listina)
             vasted[failist_toit] = round(failist_kaloraaž,2)
     fail.close()
@@ -55,9 +70,12 @@ def uustoit(toit, kalor):
     f.close()
 
 def tagasta_kaloraaž(toit, kogus):
-    vaste = otsing(toit)
-    kaloraaž = float(vaste[toit]) * float(kogus)/100
-    showinfo("Vastus", "Tarbitud kaloraaž:\n" + str(kaloraaž) + "kcal")
+    try:
+        vaste = otsing(toit)
+        kaloraaž = float(vaste[toit]) * float(kogus)/100
+        showinfo("Vastus", "Toit:\n"+toit+"\n"+"Tarbitud kaloraaž:\n" + str(kaloraaž) + "kcal")
+    except:
+        showinfo("Viga","Sisestatud toit või toidu kogus on vigane. Proovige uuesti.")
 
 
 def toitude_leidmine(event):
@@ -75,7 +93,7 @@ def andmete_sisestamine(sisend1, sisend2):
     except:
         showinfo("Teade", "Sisend on vigane. Kontrollige, et kaloraaži lahtrisse on sisestatud ainult arv.")
         return
-    tekst = "Kas sisestan faili järgmise kirje: \n" + str(toit) + "\n" + str(kalor) + " kcal saja grammi kohta"
+    tekst = "Kas sisestan faili järgmise kirje? \n" +'"'+str(toit)+'"'+ "\n" +'"'+str(kalor)+'"'+ ' kcal saja grammi kohta'
     vastus = askyesno("Kinnitus", tekst)
     if vastus == True:
         uustoit(toit, kalor)
@@ -84,13 +102,15 @@ def andmete_sisestamine(sisend1, sisend2):
         showinfo("Teade", "Toitu ei sisestatud.")
 
 
-root = Tk()
+ruut = Tk()
 
 #Akna nimi ja suurus
-root.title("Kalori luger")
-root.geometry("290x180")
+ruut.title("Kalori luger")
+ruut.geometry("400x200")
+
+
 #Akna erinevad tab'id ehk leheküljed
-leheküljed = ttk.Notebook(root)
+leheküljed = ttk.Notebook(ruut)
 lehekülg1 = ttk.Frame(leheküljed)
 lehekülg2 = ttk.Frame(leheküljed)
 leheküljed.add(lehekülg1, text="Kalkulaator")
@@ -101,23 +121,29 @@ leheküljed.pack(expand=1, fill="both")
 #Raamid
 raam_lahtrid = Frame(lehekülg1)
 raam_nupp = Frame(lehekülg1)
-raam_lahtrid.pack(side=TOP, pady=(30, 10))
+raam_lahtrid.pack(side=TOP, pady=(40, 10))
 raam_nupp.pack(side=TOP)
+
 #Sildid
 silt1 = Label(raam_lahtrid, text="Toiduaine: ")
 silt2 = Label(raam_lahtrid, text="Kogus (g): ")
 silt1.grid(row=3, column=0, pady=1, sticky=E)
 silt2.grid(row=4, column=0, pady=1, sticky=E)
+silt1.configure(background="powderblue")
+silt2.configure(background="powderblue")
+
 #Teksti alad
 global toit
-toit = ttk.Combobox(raam_lahtrid, width=17, height=10)
+toit = ttk.Combobox(raam_lahtrid, width=45, height=10)
 toit.bind("<Key>", toitude_leidmine)
 toit.grid(row=3, column=1)
-kogus1 = Entry(raam_lahtrid)
-kogus1.grid(row=4, column=1)
+kogus1 = Entry(raam_lahtrid, width=10)
+kogus1.grid(row=4, column=1, sticky=W)
+
 #Nupud
 sisesta_nupp = Button(raam_nupp, text="Enter", command=lambda: tagasta_kaloraaž(toit.get(), kogus1.get()))
 sisesta_nupp.grid(row=6, column=3, pady=5, sticky="W")
+sisesta_nupp.configure(background="salmon")
 
 #!!! TEINE LEHT !!!
 #Raamid
@@ -127,6 +153,7 @@ raam_nupp = Frame(lehekülg2)
 raam_uustoit.pack(side=TOP, pady=(10,10))
 raam_uuskaloraaž.pack(side=TOP, pady=(0, 10))
 raam_nupp.pack(side=TOP, pady=(5, 10))
+
 #Uus toiduaine
 uus_toit = StringVar()
 silt1 = Label(raam_uustoit, text="Uus toiduaine: ")
@@ -142,5 +169,6 @@ kogus2.pack(side=TOP)
 #Nupp
 uus_toit_nupp = Button(raam_nupp, text="Sisesta", command=lambda: andmete_sisestamine(uus_toit.get(), kaloraaž.get()))
 uus_toit_nupp.grid(row=5, column= 1, sticky=W)
-  
-root.mainloop()
+uus_toit_nupp.configure(background="lightgreen")
+
+ruut.mainloop()
