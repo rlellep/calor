@@ -1,0 +1,3 @@
+exe made using pyinstaller
+command:
+pyinstaller --onefile <your_script_name>.py
