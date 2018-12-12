@@ -34,8 +34,11 @@ def otsing(otsitav_toit, faili_nimi="export.csv"):
                 if tahed[i] == failisttoit[i]:
                     k += 1
         if otsitav_toit in failist_toit or k/m > 0.83:
-            failist_kaloraaž = leia_kaloraaž(rida_listina)
-            vasted[failist_toit] = round(failist_kaloraaž,2)
+            try:
+                failist_kaloraaž = leia_kaloraaž(rida_listina)
+                vasted[failist_toit] = round(failist_kaloraaž,2)
+            except:
+                return None
     fail.close()
     return vasted
 
@@ -73,7 +76,7 @@ def tagasta_kaloraaž(toit, kogus):
     try:
         vaste = otsing(toit)
         kaloraaž = float(vaste[toit]) * float(kogus)/100
-        showinfo("Vastus", "Toit:\n"+toit+"\n"+"Tarbitud kaloraaž:\n" + str(kaloraaž) + "kcal")
+        showinfo("Vastus", "Toit: "+toit+"\n"+"Tarbitud kaloraaž: " + str(kaloraaž) + "kcal")
     except:
         showinfo("Viga","Sisestatud toit või toidu kogus on vigane. Proovige uuesti.")
 
