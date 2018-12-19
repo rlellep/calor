@@ -22,8 +22,17 @@ def otsing(otsitav_toit, faili_nimi="export.csv"):
     fail = open(faili_nimi)
     for rida in fail:
         k = 0
-        rida_listina = rida.split(",")
-        failist_toit = rida_listina[0].strip("\"")
+        uusrida = ""
+        isopen = False
+        for r in rida:
+            if r == "," and not isopen:
+                r = ";"
+            elif r in ('"'):
+                isopen = not isopen
+            uusrida += r
+        rida_listina = uusrida.split(";")
+        rida_listina[0] = rida_listina[0].strip('"')
+        failist_toit = rida_listina[0]
         failisttoit = failist_toit.lower()
         if len(failisttoit) <= m:
             for i in range(len(failisttoit)):
