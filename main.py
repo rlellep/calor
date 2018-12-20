@@ -45,7 +45,7 @@ def otsing(otsitav_toit, faili_nimi="export.csv"):
         if otsitav_toit in failist_toit or k/m > 0.83:
             try:
                 failist_kaloraaž = leia_kaloraaž(rida_listina)
-                vasted[failist_toit] = round(failist_kaloraaž,2)
+                vasted[failist_toit] = failist_kaloraaž
             except:
                 return None
     fail.close()
@@ -84,7 +84,7 @@ def uustoit(toit, kalor):
 def tagasta_kaloraaž(toit, kogus):
     try:
         vaste = otsing(toit)
-        kaloraaž = float(vaste[toit]) * float(kogus)/100
+        kaloraaž = round(float(vaste[toit]) * float(kogus)/100,2)
         showinfo("Vastus", "Toit: "+toit+"\n"+"Tarbitud kaloraaž: " + str(kaloraaž) + "kcal")
     except:
         showinfo("Viga","Sisestatud toit või toidu kogus on vigane. Proovige uuesti.")
@@ -118,7 +118,7 @@ ruut = Tk()
 
 #Akna nimi ja suurus
 ruut.title("Kalori luger")
-ruut.geometry("400x200")
+ruut.geometry("500x200")
 
 
 #Akna erinevad tab'id ehk leheküljed
@@ -146,7 +146,7 @@ silt2.configure(background="powderblue")
 
 #Teksti alad
 global toit
-toit = ttk.Combobox(raam_lahtrid, width=45, height=10)
+toit = ttk.Combobox(raam_lahtrid, width=60, height=10)
 toit.bind("<Key>", toitude_leidmine)
 toit.grid(row=3, column=1)
 kogus1 = Entry(raam_lahtrid, width=10)
